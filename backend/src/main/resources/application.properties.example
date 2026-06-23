@@ -1,0 +1,7 @@
+spring.application.name=backend
+server.port=8080
+
+spring.data.mongodb.uri=mongodb+srv://<username>:<password>@<cluster-url>/shopclone?retryWrites=true&w=majority
+
+jwt.secret=replace_with_your_own_long_random_secret
+jwt.expiration=86400000

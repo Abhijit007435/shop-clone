@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   getCart,
   updateCartItem,
@@ -9,6 +10,7 @@ export default function Cart() {
   const [cart, setCart] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const fetchCart = async () => {
     try {
@@ -163,14 +165,15 @@ export default function Cart() {
           {cart.totalPrice.toLocaleString()}
         </h2>
 
-        <button
-          style={{
-            padding: "12px 24px",
-            fontSize: 16,
-          }}
-        >
-          Proceed To Checkout
-        </button>
+            <button
+      onClick={() => navigate("/addresses")}
+      style={{
+        padding: "12px 24px",
+        fontSize: 16,
+      }}
+    >
+      Proceed To Checkout
+    </button>
       </div>
     </div>
   );

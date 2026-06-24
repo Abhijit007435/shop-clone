@@ -37,6 +37,7 @@ export default function Navbar() {
           <>
             <Link to="/login" style={{ color: "white" }}>Login</Link>
             <Link to="/register" style={{ color: "white" }}>Register</Link>
+            <Link to="/cart" style={{ color: "white" }}>Cart</Link>
           </>
         )}
       </div>

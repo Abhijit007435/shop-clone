@@ -241,4 +241,44 @@ public OrderResponse cancelOrder(String orderId) {
 
     return toResponse(updatedOrder);
 }
+public List<OrderResponse> getAllOrders() {
+
+    return orderRepository
+            .findAllByOrderByOrderedAtDesc()
+            .stream()
+            .map(this::toResponse)
+            .toList();
+}
+public OrderResponse updateOrderStatus(
+        @NonNull String orderId,
+        String status
+) {
+
+    Order order = orderRepository.findById(orderId)
+            .orElseThrow(() ->
+                    new IllegalArgumentException(
+                            "Order not found"));
+
+    List<String> validStatuses = List.of(
+            "PENDING",
+            "CONFIRMED",
+            "SHIPPED",
+            "DELIVERED",
+            "CANCELLED"
+    );
+
+    status = status.toUpperCase();
+
+    if (!validStatuses.contains(status)) {
+        throw new IllegalArgumentException(
+                "Invalid order status");
+    }
+
+    order.setStatus(status);
+
+    Order updatedOrder =
+            orderRepository.save(order);
+
+    return toResponse(updatedOrder);
+}
 }

@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getProductById } from "../api/productApi";
+import { addToCart } from "../api/cartApi";
 
 export default function ProductDetail() {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [quantity, setQuantity] = useState(1);
+const [adding, setAdding] = useState(false);
 
   useEffect(() => {
     let isCancelled = false;
@@ -49,6 +52,25 @@ export default function ProductDetail() {
       </div>
     );
   }
+  const handleAddToCart = async () => {
+  try {
+    setAdding(true);
+
+    await addToCart({
+      productId: product.id,
+      quantity,
+    });
+
+    alert("Added to cart");
+  } catch (error) {
+    alert(
+      error.response?.data?.message ||
+      "Failed to add to cart"
+    );
+  } finally {
+    setAdding(false);
+  }
+};
 
   const hasDiscount = product.discountPercentage > 0;
 
@@ -126,6 +148,24 @@ export default function ProductDetail() {
           >
             {product.inStock ? `In stock (${product.stockQuantity} available)` : "Out of stock"}
           </p>
+          <div style={{ marginBottom: 16 }}>
+  <label>Quantity:</label>
+
+  <select
+    value={quantity}
+    onChange={(e) =>
+      setQuantity(Number(e.target.value))
+    }
+  >
+    {[...Array(
+      Math.min(product.stockQuantity, 10)
+    )].map((_, i) => (
+      <option key={i + 1} value={i + 1}>
+        {i + 1}
+      </option>
+    ))}
+  </select>
+</div>
 
           <button
             disabled={!product.inStock}
@@ -138,8 +178,9 @@ export default function ProductDetail() {
               cursor: product.inStock ? "pointer" : "not-allowed",
               marginBottom: 24,
             }}
+            onClick={handleAddToCart}
           >
-            Add to Cart
+            {adding ? "Adding..." : "Add To Cart"}
           </button>
 
           <h3 style={{ fontSize: 16, marginBottom: 8 }}>Description</h3>

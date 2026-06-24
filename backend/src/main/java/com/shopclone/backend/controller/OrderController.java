@@ -3,6 +3,8 @@ package com.shopclone.backend.controller;
 import com.shopclone.backend.dto.OrderResponse;
 import com.shopclone.backend.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import com.shopclone.backend.dto.PlaceOrderRequest;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -17,9 +19,10 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("/place")
-    public OrderResponse placeOrder() {
-        return orderService.placeOrder();
+    public OrderResponse placeOrder(@Valid @RequestBody PlaceOrderRequest request) {
+        return orderService.placeOrder(request);
     }
+
     @GetMapping
 public List<OrderResponse> getMyOrders() {
     return orderService.getMyOrders();

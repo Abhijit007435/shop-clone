@@ -22,6 +22,7 @@ public class Order {
     private String id;
 
     private String userId;
+    private ShippingAddress shippingAddress;
 
     @Builder.Default
     private List<OrderItem> items = new ArrayList<>();
@@ -50,4 +51,18 @@ public class Order {
 
         private double subtotal;
     }
+        @Data
+        @Builder
+        @NoArgsConstructor
+        @AllArgsConstructor
+        public static class ShippingAddress {
+
+            private String fullName;
+            private String phoneNumber;
+            private String street;
+            private String city;
+            private String state;
+            private String pincode;
+            private String country;
+        }
 }

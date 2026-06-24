@@ -1,6 +1,7 @@
 package com.shopclone.backend.service;
 
 import com.shopclone.backend.dto.OrderResponse;
+import com.shopclone.backend.dto.PlaceOrderRequest;
 import com.shopclone.backend.model.Cart;
 import com.shopclone.backend.model.Order;
 import com.shopclone.backend.model.Product;
@@ -8,6 +9,9 @@ import com.shopclone.backend.repository.CartRepository;
 import com.shopclone.backend.repository.OrderRepository;
 import com.shopclone.backend.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import com.shopclone.backend.dto.PlaceOrderRequest;
+import com.shopclone.backend.model.Address;
+import com.shopclone.backend.repository.AddressRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,6 +31,8 @@ public class OrderService {
     private final CartRepository cartRepository;
     @SuppressWarnings("unused")
     private final ProductRepository productRepository;
+    @SuppressWarnings("unused")
+private final AddressRepository addressRepository;
 
     @SuppressWarnings("unused")
     private String getCurrentUserId() {
@@ -35,9 +41,22 @@ public class OrderService {
                 .getName();
     }
     @SuppressWarnings("null")
-    public OrderResponse placeOrder() {
+public OrderResponse placeOrder(
+        PlaceOrderRequest request
+) {
 
     String userId = getCurrentUserId();
+
+    Address address = addressRepository
+            .findById(request.getAddressId())
+            .orElseThrow(() ->
+                    new IllegalArgumentException(
+                            "Address not found"));
+
+    if (!address.getUserId().equals(userId)) {
+        throw new IllegalArgumentException(
+                "Access denied");
+    }
 
     Cart cart = cartRepository.findByUserId(userId)
             .orElseThrow(() ->
@@ -99,6 +118,17 @@ public class OrderService {
 
     Order order = Order.builder()
             .userId(userId)
+            .shippingAddress(
+                    Order.ShippingAddress.builder()
+                            .fullName(address.getFullName())
+                            .phoneNumber(address.getPhoneNumber())
+                            .street(address.getStreet())
+                            .city(address.getCity())
+                            .state(address.getState())
+                            .pincode(address.getPincode())
+                            .country(address.getCountry())
+                            .build()
+            )
             .items(orderItems)
             .totalAmount(
                     Math.round(totalAmount * 100) / 100.0)

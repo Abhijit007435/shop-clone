@@ -58,10 +58,10 @@ public CorsConfigurationSource corsConfigurationSource() {
 
     CorsConfiguration configuration = new CorsConfiguration();
 
-    configuration.setAllowedOrigins(List.of(
-            "http://localhost:5173",
-            "https://shop-clone-rouge.vercel.app"
-    ));
+    configuration.setAllowedOriginPatterns(List.of(
+        "http://localhost:5173",
+        "https://*.vercel.app"
+));
 
     configuration.setAllowedMethods(List.of(
             "GET",

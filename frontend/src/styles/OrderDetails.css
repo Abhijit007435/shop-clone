@@ -1,0 +1,168 @@
+.order-details {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 20px;
+  color: #222;
+}
+
+.order-details h1 {
+  font-size: 30px;
+  margin-bottom: 25px;
+  color: #131921;
+}
+
+.order-box {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.order-box h2 {
+  margin: 20px 0 15px;
+  color: #131921;
+}
+
+.order-box h3 {
+  margin: 0;
+  color: #222;
+}
+
+.order-box p {
+  color: #444;
+  margin: 8px 0;
+  font-size: 15px;
+}
+
+.order-box hr {
+  border: none;
+  border-top: 1px solid #e5e5e5;
+  margin: 25px 0;
+}
+
+/* Product */
+
+.product-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 0;
+  border-bottom: 1px solid #ececec;
+}
+
+.product-row:last-child {
+  border-bottom: none;
+}
+
+.product-row h3 {
+  color: #111;
+}
+
+.product-row p {
+  color: #555;
+}
+
+/* Shipping */
+
+.shipping-box {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 18px;
+}
+
+.shipping-box p {
+  color: #333;
+  line-height: 1.8;
+}
+
+.shipping-box strong {
+  color: #111;
+  font-size: 17px;
+}
+
+/* Total */
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 25px;
+}
+
+.total-row h2 {
+  color: #B12704;
+  margin: 0;
+}
+
+/* Status */
+
+.status {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.status.pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status.confirmed {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status.shipped {
+  background: #d1ecf1;
+  color: #0c5460;
+}
+
+.status.delivered {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status.cancelled {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* Back Button */
+
+.back-btn {
+  margin-top: 25px;
+  background: #131921;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.back-btn:hover {
+  background: #232f3e;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+
+  .product-row,
+  .total-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .order-box {
+    padding: 20px;
+  }
+
+  .order-details h1 {
+    font-size: 24px;
+  }
+}

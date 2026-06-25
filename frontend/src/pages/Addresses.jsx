@@ -1,18 +1,26 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   getAddresses,
   addAddress,
   deleteAddress,
 } from "../api/addressApi";
 import { placeOrder } from "../api/orderApi";
+import { useNavigate } from "react-router-dom";
+import "../styles/Addresses.css";
 
 export default function Addresses() {
   const navigate = useNavigate();
 
   const [addresses, setAddresses] = useState([]);
-  const [selectedAddress, setSelectedAddress] = useState("");
+
+  const [selectedAddress, setSelectedAddress] =
+    useState("");
+
   const [loading, setLoading] = useState(true);
+
+  const [showForm, setShowForm] = useState(false);
+
+  const [saving, setSaving] = useState(false);
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -30,14 +38,10 @@ export default function Addresses() {
 
       setAddresses(response.data);
 
-      if (
-        response.data.length > 0 &&
-        !selectedAddress
-      ) {
+      if (response.data.length > 0) {
         setSelectedAddress(response.data[0].id);
       }
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
       alert("Failed to load addresses");
     } finally {
       setLoading(false);
@@ -59,6 +63,8 @@ export default function Addresses() {
     e.preventDefault();
 
     try {
+      setSaving(true);
+
       await addAddress(formData);
 
       setFormData({
@@ -71,16 +77,24 @@ export default function Addresses() {
         country: "India",
       });
 
+      setShowForm(false);
+
       fetchAddresses();
     } catch (error) {
       alert(
         error.response?.data?.message ||
           "Failed to add address"
       );
+    } finally {
+      setSaving(false);
     }
   };
 
   const handleDelete = async (id) => {
+    if (!window.confirm("Delete address?")) {
+      return;
+    }
+
     try {
       await deleteAddress(id);
 
@@ -88,7 +102,7 @@ export default function Addresses() {
     } catch (error) {
       alert(
         error.response?.data?.message ||
-          "Failed to delete address"
+          "Failed to delete"
       );
     }
   };
@@ -100,13 +114,13 @@ export default function Addresses() {
     }
 
     try {
-      await placeOrder({
+      const response = await placeOrder({
         addressId: selectedAddress,
       });
 
-      alert("Order placed successfully");
+      alert("Order placed successfully!");
 
-      navigate("/orders");
+      navigate(`/orders/${response.data.orderId}`);
     } catch (error) {
       alert(
         error.response?.data?.message ||
@@ -116,158 +130,198 @@ export default function Addresses() {
   };
 
   if (loading) {
-    return <p>Loading addresses...</p>;
+    return (
+      <div className="address-page">
+        <h2>Loading...</h2>
+      </div>
+    );
   }
 
   return (
-    <div
-      style={{
-        maxWidth: 1000,
-        margin: "0 auto",
-        padding: 24,
-      }}
-    >
-      <h1>Addresses</h1>
+    <div className="address-page">
 
-      <h2>Saved Addresses</h2>
+      <div className="address-header">
 
-      {addresses.length === 0 ? (
-        <p>No addresses found.</p>
-      ) : (
-        addresses.map((address) => (
-          <div
-            key={address.id}
-            style={{
-              border: "1px solid #ddd",
-              padding: 12,
-              marginBottom: 12,
-            }}
+        <h1>My Addresses</h1>
+
+        <button
+          className="add-address-btn"
+          onClick={() =>
+            setShowForm(!showForm)
+          }
+        >
+          {showForm
+            ? "Cancel"
+            : "+ Add Address"}
+        </button>
+
+      </div>
+
+      {showForm && (
+
+        <form
+          className="address-form"
+          onSubmit={handleAddAddress}
+        >
+
+          <input
+            name="fullName"
+            placeholder="Full Name"
+            value={formData.fullName}
+            onChange={handleChange}
+            required
+          />
+
+          <input
+            name="phoneNumber"
+            placeholder="Phone Number"
+            value={formData.phoneNumber}
+            onChange={handleChange}
+            required
+          />
+
+          <input
+            name="street"
+            placeholder="Street"
+            value={formData.street}
+            onChange={handleChange}
+            required
+          />
+
+          <input
+            name="city"
+            placeholder="City"
+            value={formData.city}
+            onChange={handleChange}
+            required
+          />
+
+          <input
+            name="state"
+            placeholder="State"
+            value={formData.state}
+            onChange={handleChange}
+            required
+          />
+
+          <input
+            name="pincode"
+            placeholder="Pincode"
+            value={formData.pincode}
+            onChange={handleChange}
+            required
+          />
+
+          <input
+            name="country"
+            placeholder="Country"
+            value={formData.country}
+            onChange={handleChange}
+            required
+          />
+
+          <button
+            type="submit"
+            disabled={saving}
           >
-            <input
-              type="radio"
-              checked={
-                selectedAddress === address.id
-              }
-              onChange={() =>
-                setSelectedAddress(address.id)
-              }
-            />
+            {saving
+              ? "Saving..."
+              : "Save Address"}
+          </button>
 
-            <strong>
-              {address.fullName}
-            </strong>
+        </form>
 
-            <p>
-              {address.street},{" "}
-              {address.city},{" "}
-              {address.state}
-            </p>
+      )}
 
-            <p>
-              {address.pincode},{" "}
-              {address.country}
-            </p>
+      <div className="address-list">
+              {addresses.length === 0 ? (
 
-            <p>{address.phoneNumber}</p>
+        <div className="no-address">
+
+          <h3>No Address Added</h3>
+
+          <p>
+            Please add an address before placing
+            your order.
+          </p>
+
+        </div>
+
+      ) : (
+
+        addresses.map((address) => (
+
+          <div
+            className="address-card"
+            key={address.id}
+          >
+
+            <div className="address-top">
+
+              <input
+                type="radio"
+                checked={
+                  selectedAddress === address.id
+                }
+                onChange={() =>
+                  setSelectedAddress(address.id)
+                }
+              />
+
+              <div>
+
+                <h3>{address.fullName}</h3>
+
+                <p>{address.street}</p>
+
+                <p>
+                  {address.city},{" "}
+                  {address.state}
+                </p>
+
+                <p>
+                  {address.pincode},{" "}
+                  {address.country}
+                </p>
+
+                <p>{address.phoneNumber}</p>
+
+              </div>
+
+            </div>
 
             <button
+              className="delete-address-btn"
               onClick={() =>
                 handleDelete(address.id)
               }
             >
               Delete
             </button>
+
           </div>
+
         ))
+
       )}
 
-      <button
-        onClick={handlePlaceOrder}
-        style={{
-          padding: "12px 24px",
-          marginBottom: 30,
-        }}
-      >
-        Place Order
-      </button>
+      {addresses.length > 0 && (
 
-      <h2>Add Address</h2>
+        <div className="place-order-section">
 
-      <form onSubmit={handleAddAddress}>
-        <input
-          name="fullName"
-          placeholder="Full Name"
-          value={formData.fullName}
-          onChange={handleChange}
-        />
+          <button
+            className="place-order-btn"
+            onClick={handlePlaceOrder}
+          >
+            Place Order
+          </button>
 
-        <br />
-        <br />
+        </div>
 
-        <input
-          name="phoneNumber"
-          placeholder="Phone Number"
-          value={formData.phoneNumber}
-          onChange={handleChange}
-        />
+      )}
 
-        <br />
-        <br />
-
-        <input
-          name="street"
-          placeholder="Street"
-          value={formData.street}
-          onChange={handleChange}
-        />
-
-        <br />
-        <br />
-
-        <input
-          name="city"
-          placeholder="City"
-          value={formData.city}
-          onChange={handleChange}
-        />
-
-        <br />
-        <br />
-
-        <input
-          name="state"
-          placeholder="State"
-          value={formData.state}
-          onChange={handleChange}
-        />
-
-        <br />
-        <br />
-
-        <input
-          name="pincode"
-          placeholder="Pincode"
-          value={formData.pincode}
-          onChange={handleChange}
-        />
-
-        <br />
-        <br />
-
-        <input
-          name="country"
-          placeholder="Country"
-          value={formData.country}
-          onChange={handleChange}
-        />
-
-        <br />
-        <br />
-
-        <button type="submit">
-          Add Address
-        </button>
-      </form>
     </div>
-  );
+
+  </div>
+);
 }

@@ -1,0 +1,159 @@
+.orders-page {
+  max-width: 1100px;
+  margin: 30px auto;
+  padding: 20px;
+}
+
+.orders-page h1 {
+  margin-bottom: 25px;
+}
+
+.order-card {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 25px;
+  transition: 0.2s;
+}
+
+.order-card:hover {
+  box-shadow: 0 5px 15px rgba(0,0,0,.08);
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-header h3 {
+  margin: 0;
+}
+
+.order-header p {
+  margin-top: 5px;
+  color: #666;
+}
+
+.status {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 13px;
+}
+
+.status.pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status.confirmed {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status.shipped {
+  background: #d1ecf1;
+  color: #0c5460;
+}
+
+.status.delivered {
+  background: #d4edda;
+  color: green;
+}
+
+.status.cancelled {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.order-items {
+  margin: 20px 0;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.order-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.order-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.details-btn {
+  border: none;
+  background: #131921;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.details-btn:hover {
+  background: #232f3e;
+}
+
+.cancel-btn {
+  border: none;
+  background: #d32f2f;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.cancel-btn:hover {
+  background: #b71c1c;
+}
+
+.empty-orders {
+  text-align: center;
+  margin-top: 120px;
+}
+
+.empty-orders button {
+  margin-top: 20px;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  background: #ffd814;
+  cursor: pointer;
+}
+
+@media (max-width:768px){
+
+.order-header,
+.order-footer,
+.order-item{
+
+flex-direction:column;
+align-items:flex-start;
+gap:12px;
+
+}
+
+.order-actions{
+
+width:100%;
+
+}
+
+.order-actions button{
+
+flex:1;
+
+}
+
+}

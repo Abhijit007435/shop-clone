@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import "../styles/Navbar.css";
 
 export default function Navbar() {
   const { isAuthenticated, user, logout } = useAuth();
@@ -11,36 +12,45 @@ export default function Navbar() {
   };
 
   return (
-    <nav
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "12px 24px",
-        backgroundColor: "#131921",
-        color: "white",
-      }}
-    >
-      <Link to="/" style={{ color: "white", fontWeight: "bold", fontSize: 20, textDecoration: "none" }}>
+    <nav className="navbar">
+
+      <Link to="/" className="logo">
         ShopClone
       </Link>
 
-      <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
-        {isAuthenticated ? (
+      <div className="nav-links">
+
+        <Link to="/">Home</Link>
+
+        {isAuthenticated && (
           <>
-            <span>Hi, {user.fullName}</span>
-            <button onClick={handleLogout} style={{ cursor: "pointer" }}>
+            <Link to="/cart">Cart</Link>
+
+            <Link to="/orders">Orders</Link>
+
+            <span className="welcome">
+              Hi, {user.fullName}
+            </span>
+
+            <button
+              onClick={handleLogout}
+              className="logout-btn"
+            >
               Logout
             </button>
           </>
-        ) : (
+        )}
+
+        {!isAuthenticated && (
           <>
-            <Link to="/login" style={{ color: "white" }}>Login</Link>
-            <Link to="/register" style={{ color: "white" }}>Register</Link>
-            <Link to="/cart" style={{ color: "white" }}>Cart</Link>
+            <Link to="/login">Login</Link>
+
+            <Link to="/register">Register</Link>
           </>
         )}
+
       </div>
+
     </nav>
   );
 }

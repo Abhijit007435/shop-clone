@@ -8,6 +8,10 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface ProductRepository extends MongoRepository<Product, String> {
 
     Page<Product> findByActiveTrueAndCategoryIgnoreCase(String category, Pageable pageable);
+  boolean existsByBrandIgnoreCaseAndNameIgnoreCase(
+        String brand,
+        String name
+);
 
     Page<Product> findByActiveTrue(Pageable pageable);
 }

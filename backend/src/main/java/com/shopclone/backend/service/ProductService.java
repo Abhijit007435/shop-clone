@@ -27,6 +27,11 @@ public class ProductService {
 
     @SuppressWarnings("null")
     public ProductResponse createProduct(ProductRequest request) {
+        if (productRepository.existsByBrandIgnoreCaseAndNameIgnoreCase(request.getBrand(),request.getName())) {
+        throw new IllegalArgumentException(
+                "Product with name '" + request.getName() + "' already exists."
+        );
+    }
         Product product = Product.builder()
                 .name(request.getName())
                 .description(request.getDescription())

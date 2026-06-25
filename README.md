@@ -1,134 +1,296 @@
 # ShopClone 🛒
 
-A full-stack Amazon-style e-commerce platform built as a learning project — React frontend, Spring Boot backend, MongoDB Atlas database.
+A full-stack Amazon-inspired e-commerce application built with **React**, **Spring Boot**, and **MongoDB Atlas**. This project was developed to learn full-stack application development, REST APIs, JWT authentication, and modern frontend-backend integration.
 
-## Features
+---
 
-- **Authentication** — JWT-based register/login, role-based access (user/admin), BCrypt password hashing
-- **Product catalog** — Browse, search (matches name and description), filter by category, paginated listings
-- **Product details** — Full product view with pricing, discounts, stock status
-- **Admin product management** — Create, update, and soft-delete products (admin-only API endpoints)
+# Features
 
-## Tech Stack
+## Authentication & Authorization
 
-**Frontend**
-- React (via Vite)
-- React Router for navigation
-- Axios for API calls
-- Context API for auth state
+* JWT-based authentication
+* User registration and login
+* BCrypt password hashing
+* Persistent login using local storage
+* Role-based authorization (User / Admin)
+* Protected frontend routes
+* Protected backend APIs with Spring Security
 
-**Backend**
-- Spring Boot 3 (Java 17)
-- Spring Security + JWT (jjwt 0.12.x)
-- Spring Data MongoDB
-- MongoDB Atlas (cloud-hosted)
-- Maven
+---
 
-## Project Structure
+## Product Management
+
+### User Features
+
+* Browse all products
+* Product details page
+* Search by product name and description
+* Category filtering
+* Pagination
+* Stock availability display
+* Discount pricing
+
+### Admin Features
+
+* Create products
+* Update products
+* Soft delete products
+* Protected admin endpoints
+
+---
+
+## Shopping Cart
+
+* Add products to cart
+* Update quantity
+* Remove individual items
+* Clear entire cart
+* Live cart total calculation
+* Stock validation before checkout
+
+---
+
+## Address Management
+
+* Add multiple delivery addresses
+* View saved addresses
+* Delete addresses
+* Select shipping address during checkout
+
+---
+
+## Order Management
+
+### User
+
+* Place orders
+* View order history
+* View complete order details
+* Cancel pending orders
+* Automatic stock restoration on cancellation
+
+### Admin
+
+* View all customer orders
+* Update order status
+
+  * PENDING
+  * CONFIRMED
+  * SHIPPED
+  * DELIVERED
+  * CANCELLED
+
+---
+
+# Tech Stack
+
+## Frontend
+
+* React (Vite)
+* React Router DOM
+* Axios
+* Context API
+* CSS
+
+## Backend
+
+* Spring Boot 3
+* Spring Security
+* JWT (jjwt)
+* Spring Data MongoDB
+* MongoDB Atlas
+* Maven
+* Lombok
+
+---
+
+# Project Structure
 
 ```
-Amazon_clone/
-├── backend/                 # Spring Boot API
-│   └── src/main/java/com/shopclone/backend/
-│       ├── config/          # Security configuration
-│       ├── controller/      # REST endpoints
-│       ├── dto/              # Request/response objects
-│       ├── exception/       # Global error handling
-│       ├── model/             # MongoDB documents
-│       ├── repository/      # Data access layer
-│       ├── security/          # JWT filter & utilities
-│       └── service/           # Business logic
-└── frontend/                # React (Vite) app
-    └── src/
-        ├── api/                # Axios instance & API functions
-        ├── components/      # Reusable UI components
-        ├── context/          # Auth context/state
-        ├── pages/             # Page-level components
-        └── routes/            # Route protection
+shop-clone
+│
+├── backend
+│   ├── controller
+│   ├── dto
+│   ├── model
+│   ├── repository
+│   ├── security
+│   ├── service
+│   └── config
+│
+├── frontend
+│   ├── api
+│   ├── components
+│   ├── context
+│   ├── pages
+│   ├── routes
+│   └── styles
+│
+└── README.md
 ```
 
-## Getting Started
+---
 
-### Prerequisites
+# Running the Project
 
-- Java 17+
-- Node.js 18+
-- Maven
-- A MongoDB Atlas account (free tier works fine) — [create one here](https://www.mongodb.com/cloud/atlas/register)
+## Backend
 
-### Backend Setup
+```bash
+cd backend
 
-1. Navigate to the backend folder:
-   ```bash
-   cd backend
-   ```
-2. Copy the example properties file and fill in your own values:
-   ```bash
-   cp src/main/resources/application.properties.example src/main/resources/application.properties
-   ```
-3. Edit `application.properties` and set:
-   - `spring.data.mongodb.uri` — your MongoDB Atlas connection string
-   - `jwt.secret` — any long random string (used to sign JWTs)
-4. Run the backend:
-   ```bash
-   mvn spring-boot:run
-   ```
-   The API will start on `http://localhost:8080`.
+mvn spring-boot:run
+```
 
-### Frontend Setup
+Backend runs on:
 
-1. Navigate to the frontend folder:
-   ```bash
-   cd frontend
-   ```
-2. Copy the example env file:
-   ```bash
-   cp .env.example .env
-   ```
-3. Install dependencies:
-   ```bash
-   npm install
-   ```
-4. Run the dev server:
-   ```bash
-   npm run dev
-   ```
-   The app will be available at `http://localhost:5173`.
+```
+http://localhost:8080
+```
 
-### Running Both Together
+---
 
-Backend and frontend run as two separate processes — start each in its own terminal, and leave both running while you use the app.
+## Frontend
 
-## API Overview
+```bash
+cd frontend
 
-| Method | Endpoint | Access | Description |
-|--------|----------|--------|--------------|
-| POST | `/api/auth/register` | Public | Create a new account |
-| POST | `/api/auth/login` | Public | Log in, receive a JWT |
-| GET | `/api/products` | Public | List/search/filter products (paginated) |
-| GET | `/api/products/{id}` | Public | Get a single product |
-| POST | `/api/products/admin` | Admin only | Create a product |
-| PUT | `/api/products/admin/{id}` | Admin only | Update a product |
-| DELETE | `/api/products/admin/{id}` | Admin only | Soft-delete a product |
+npm install
 
-### Becoming an admin
+npm run dev
+```
 
-There's no public signup path to admin (intentionally). To test admin endpoints locally:
-1. Register a normal account
-2. In MongoDB Atlas, open the `users` collection and add `"ROLE_ADMIN"` to that user's `roles` array
-3. Log in again to get a fresh JWT that includes the new role
+Frontend runs on:
 
-## Roadmap
+```
+http://localhost:5173
+```
 
-- [x] Project setup
-- [x] Authentication (JWT, role-based access)
-- [x] Product catalog (CRUD, search, filter, pagination)
-- [ ] Cart & Wishlist
-- [ ] Checkout & Orders
-- [ ] Payments (Stripe)
-- [ ] Admin panel (UI)
-- [ ] Reviews & ratings
+---
 
-## License
+# Environment Variables
 
-This is a personal learning project, built step by step while learning full-stack development. Not intended for production use.
+## Backend (`application.properties`)
+
+```properties
+spring.data.mongodb.uri=<YOUR_MONGODB_URI>
+
+jwt.secret=<YOUR_SECRET_KEY>
+```
+
+## Frontend (`.env`)
+
+```env
+VITE_API_BASE_URL=http://localhost:8080/api
+```
+
+---
+
+# API Overview
+
+## Authentication
+
+| Method | Endpoint             |
+| ------ | -------------------- |
+| POST   | `/api/auth/register` |
+| POST   | `/api/auth/login`    |
+
+---
+
+## Products
+
+| Method | Endpoint                   | Access |
+| ------ | -------------------------- | ------ |
+| GET    | `/api/products`            | Public |
+| GET    | `/api/products/{id}`       | Public |
+| POST   | `/api/products/admin`      | Admin  |
+| PUT    | `/api/products/admin/{id}` | Admin  |
+| DELETE | `/api/products/admin/{id}` | Admin  |
+
+---
+
+## Cart
+
+| Method | Endpoint                |
+| ------ | ----------------------- |
+| GET    | `/api/cart`             |
+| POST   | `/api/cart/add`         |
+| PUT    | `/api/cart/{productId}` |
+| DELETE | `/api/cart/{productId}` |
+| DELETE | `/api/cart/clear`       |
+
+---
+
+## Addresses
+
+| Method | Endpoint              |
+| ------ | --------------------- |
+| GET    | `/api/addresses`      |
+| POST   | `/api/addresses`      |
+| DELETE | `/api/addresses/{id}` |
+
+---
+
+## Orders
+
+| Method | Endpoint                  |
+| ------ | ------------------------- |
+| POST   | `/api/orders/place`       |
+| GET    | `/api/orders`             |
+| GET    | `/api/orders/{id}`        |
+| PUT    | `/api/orders/{id}/cancel` |
+
+---
+
+## Admin Orders
+
+| Method | Endpoint                 |
+| ------ | ------------------------ |
+| GET    | `/api/orders/admin`      |
+| PUT    | `/api/orders/admin/{id}` |
+
+---
+
+# Becoming an Admin
+
+1. Register a user account.
+2. Open MongoDB Atlas.
+3. Navigate to the `users` collection.
+4. Add `"ROLE_ADMIN"` to the user's `roles` array.
+5. Log in again to receive a new JWT containing the admin role.
+
+---
+
+# Current Project Status
+
+* ✅ JWT Authentication
+* ✅ Role-based Authorization
+* ✅ Product Catalog
+* ✅ Search & Filtering
+* ✅ Pagination
+* ✅ Shopping Cart
+* ✅ Address Management
+* ✅ Checkout Flow
+* ✅ Order Management
+* ✅ Admin Order Management
+* ✅ Product CRUD
+
+
+---
+
+# Future Improvements
+
+* Product Reviews & Ratings
+* Wishlist
+* Stripe Payment Integration
+* Order Tracking Timeline
+* Admin Dashboard Analytics
+* Email Notifications
+* Image Upload (Cloudinary/AWS S3)
+
+---
+
+# License
+
+This project was built as a learning project to practice full-stack development using React, Spring Boot, Spring Security, JWT, and MongoDB.
+
+It is intended for educational purposes and is not production-ready.

@@ -27,7 +27,11 @@ export default function Navbar() {
             <Link to="/cart">Cart</Link>
 
             <Link to="/orders">Orders</Link>
-
+{user?.roles?.includes("ROLE_ADMIN") && (
+  <Link to="/admin/orders">
+    Admin Orders
+  </Link>
+)}
             <span className="welcome">
               Hi, {user.fullName}
             </span>

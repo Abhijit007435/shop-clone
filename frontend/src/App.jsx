@@ -10,6 +10,7 @@ import Cart from "./pages/Cart";
 import Addresses from "./pages/Addresses";
 import Orders from "./pages/Orders";
 import OrderDetails from "./pages/OrderDetails";
+import AdminOrders from "./pages/AdminOrders";
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
           path="/orders/:id"
           element={<OrderDetails />}
         />
+        <Route path="/admin/orders" element={<AdminOrders />} />
 
       </Routes>
 

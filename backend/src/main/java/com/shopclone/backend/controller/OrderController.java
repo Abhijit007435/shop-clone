@@ -4,11 +4,14 @@ import com.shopclone.backend.dto.OrderResponse;
 import com.shopclone.backend.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import com.shopclone.backend.dto.PlaceOrderRequest;
+import com.shopclone.backend.dto.UpdateOrderStatusRequest;
+
 import jakarta.validation.Valid;
 
 import java.util.List;
 
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,6 +30,31 @@ public class OrderController {
 public List<OrderResponse> getMyOrders() {
     return orderService.getMyOrders();
 }
+@GetMapping("/admin")
+@PreAuthorize("hasRole('ADMIN')")
+public List<OrderResponse> getAllOrders() {
+
+    return orderService.getAllOrders();
+
+}
+
+@PutMapping("/admin/{orderId}")
+@PreAuthorize("hasRole('ADMIN')")
+public OrderResponse updateOrderStatus(
+
+        @PathVariable @NonNull String orderId,
+
+        @Valid
+        @RequestBody UpdateOrderStatusRequest request
+
+) {
+
+    return orderService.updateOrderStatus(
+            orderId,
+            request.getStatus()
+    );
+
+}
 @GetMapping("/{orderId}")
 public OrderResponse getOrderById(
         @PathVariable @NonNull String orderId
@@ -39,4 +67,5 @@ public OrderResponse cancelOrder(
 ) {
     return orderService.cancelOrder(orderId);
 }
+
 }

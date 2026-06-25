@@ -150,8 +150,7 @@ private OrderResponse toResponse(Order order) {
             order.getItems()
                     .stream()
                     .map(item ->
-                            OrderResponse.OrderItemResponse
-                                    .builder()
+                            OrderResponse.OrderItemResponse.builder()
                                     .productId(item.getProductId())
                                     .productName(item.getProductName())
                                     .priceAtOrderTime(item.getPriceAtOrderTime())
@@ -161,20 +160,25 @@ private OrderResponse toResponse(Order order) {
                     )
                     .toList();
 
+    OrderResponse.ShippingAddressResponse shipping = null;
+
+    if (order.getShippingAddress() != null) {
+
+        shipping = OrderResponse.ShippingAddressResponse.builder()
+                .fullName(order.getShippingAddress().getFullName())
+                .phoneNumber(order.getShippingAddress().getPhoneNumber())
+                .street(order.getShippingAddress().getStreet())
+                .city(order.getShippingAddress().getCity())
+                .state(order.getShippingAddress().getState())
+                .pincode(order.getShippingAddress().getPincode())
+                .country(order.getShippingAddress().getCountry())
+                .build();
+    }
+
     return OrderResponse.builder()
             .orderId(order.getId())
             .items(items)
-            .shippingAddress(
-                    OrderResponse.ShippingAddressResponse.builder()
-                            .fullName(order.getShippingAddress().getFullName())
-                            .phoneNumber(order.getShippingAddress().getPhoneNumber())
-                            .street(order.getShippingAddress().getStreet())
-                            .city(order.getShippingAddress().getCity())
-                            .state(order.getShippingAddress().getState())
-                            .pincode(order.getShippingAddress().getPincode())
-                            .country(order.getShippingAddress().getCountry())
-                            .build()
-            )
+            .shippingAddress(shipping)
             .totalAmount(order.getTotalAmount())
             .status(order.getStatus())
             .orderedAt(order.getOrderedAt())

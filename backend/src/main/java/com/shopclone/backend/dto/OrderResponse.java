@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderResponse {
+    private ShippingAddressResponse shippingAddress;
 
     private String orderId;
 
@@ -29,6 +30,7 @@ public class OrderResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class OrderItemResponse {
+        
 
         private String productId;
 
@@ -40,4 +42,18 @@ public class OrderResponse {
 
         private double subtotal;
     }
+    @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public static class ShippingAddressResponse {
+
+    private String fullName;
+    private String phoneNumber;
+    private String street;
+    private String city;
+    private String state;
+    private String pincode;
+    private String country;
+}
 }

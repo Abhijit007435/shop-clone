@@ -21,6 +21,7 @@ public class CartController {
     public CartResponse addToCart(
             @Valid @RequestBody AddToCartRequest request
     ) {
+        System.out.println(">>> CartController addToCart called <<<");
         return cartService.addToCart(request);
     }
 

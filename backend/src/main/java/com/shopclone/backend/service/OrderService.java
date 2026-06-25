@@ -9,7 +9,7 @@ import com.shopclone.backend.repository.CartRepository;
 import com.shopclone.backend.repository.OrderRepository;
 import com.shopclone.backend.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
-import com.shopclone.backend.dto.PlaceOrderRequest;
+
 import com.shopclone.backend.model.Address;
 import com.shopclone.backend.repository.AddressRepository;
 
@@ -154,8 +154,7 @@ private OrderResponse toResponse(Order order) {
                                     .builder()
                                     .productId(item.getProductId())
                                     .productName(item.getProductName())
-                                    .priceAtOrderTime(
-                                            item.getPriceAtOrderTime())
+                                    .priceAtOrderTime(item.getPriceAtOrderTime())
                                     .quantity(item.getQuantity())
                                     .subtotal(item.getSubtotal())
                                     .build()
@@ -165,6 +164,17 @@ private OrderResponse toResponse(Order order) {
     return OrderResponse.builder()
             .orderId(order.getId())
             .items(items)
+            .shippingAddress(
+                    OrderResponse.ShippingAddressResponse.builder()
+                            .fullName(order.getShippingAddress().getFullName())
+                            .phoneNumber(order.getShippingAddress().getPhoneNumber())
+                            .street(order.getShippingAddress().getStreet())
+                            .city(order.getShippingAddress().getCity())
+                            .state(order.getShippingAddress().getState())
+                            .pincode(order.getShippingAddress().getPincode())
+                            .country(order.getShippingAddress().getCountry())
+                            .build()
+            )
             .totalAmount(order.getTotalAmount())
             .status(order.getStatus())
             .orderedAt(order.getOrderedAt())

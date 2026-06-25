@@ -29,6 +29,7 @@ public class ReviewService {
                 .getName();
     }
 
+    @SuppressWarnings("null")
     public ReviewResponse addReview(
             ReviewRequest request
     ) {

@@ -11,6 +11,7 @@ import Addresses from "./pages/Addresses";
 import Orders from "./pages/Orders";
 import OrderDetails from "./pages/OrderDetails";
 import AdminOrders from "./pages/AdminOrders";
+import ProtectedRoute from "./routes/ProtectedRoute";
 
 function App() {
   return (
@@ -28,29 +29,54 @@ function App() {
 
         <Route
           path="/products/:id"
-          element={<ProductDetail />}
+          element={
+            <ProtectedRoute>
+               <ProductDetail />
+            </ProtectedRoute>
+         
+        }
         />
 
         <Route
           path="/cart"
-          element={<Cart />}
+          element={
+            <ProtectedRoute>
+              <Cart />
+            </ProtectedRoute>
+          }
         />
 
         <Route
           path="/addresses"
-          element={<Addresses />}
+          element={
+            <ProtectedRoute>
+              <Addresses />
+            </ProtectedRoute>
+          }
         />
 
         <Route
           path="/orders"
-          element={<Orders />}
+          element={
+            <ProtectedRoute>
+              <Orders />
+            </ProtectedRoute>
+          }
         />
 
         <Route
           path="/orders/:id"
-          element={<OrderDetails />}
+          element={
+            <ProtectedRoute>
+              <OrderDetails />
+            </ProtectedRoute>
+          }
         />
-        <Route path="/admin/orders" element={<AdminOrders />} />
+        <Route path="/admin/orders" element={
+          <ProtectedRoute>
+            <AdminOrders />
+          </ProtectedRoute>
+        } />
 
       </Routes>
 
